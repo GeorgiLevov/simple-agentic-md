@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>markdown tests</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23e0a45c'/%3E%3C/svg%3E">
+  <style>
+    body { margin: 24px; background: #12110f; color: #f3efe6; font: 18px/1.45 ui-monospace, monospace; }
+    pre { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <pre id="out">running…</pre>
+  <script src="../js/markdown.js"></script>
+  <script src="markdown.test.js"></script>
+  <script>
+    var result = window.runMarkdownTests();
+    document.getElementById('out').textContent = result.report;
+    document.title = result.failed ? 'FAIL' : 'PASS';
+  </script>
+</body>
+</html>
