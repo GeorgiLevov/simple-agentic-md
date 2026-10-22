@@ -94,6 +94,11 @@
     assertEqual(render('\\*not\\*'), '<p>*not*</p>');
   });
 
+  test('triple asterisks nest strong and em', function () {
+    assertEqual(render('***both***'), '<p><strong><em>both</em></strong></p>');
+    assertExcludes(render('***both***'), '<strong><em>both</strong></em>');
+  });
+
   test('fenced code is literal', function () {
     assertEqual(
       render('```js\n**no**\n<script>alert(1)</script>\n```'),
@@ -121,6 +126,12 @@
       '<p><img src="data:image/png;base64,aaaa" alt="alt"></p>'
     );
     assertIncludes(render('![a"b](data:image/png;base64,aa)'), 'alt="a&quot;b"');
+  });
+
+  test('link labels do not nest anchors', function () {
+    var nested = render('[a [b](x)](y)');
+    assertEqual(nested, '<p><a href="y">a [b](x)</a></p>');
+    assertEqual(count(nested, '<a'), 1);
   });
 
   test('dangerous URLs are neutralised', function () {
@@ -168,6 +179,22 @@
     assertIncludes(aligned, '<th class="align-center">C</th>');
     assertIncludes(aligned, '<td class="align-right">r</td>');
     assertEqual(render('a | b'), '<p>a | b</p>');
+    assertIncludes(render('| a \\| b | c |\n| --- | --- |\n| d | e |'), '<th>a | b</th>');
+  });
+
+  test('gfm tables allow a one-dash delimiter', function () {
+    var html = render('|a|b|\n|-|-|\n|1|2|');
+    assertIncludes(html, '<table>');
+    assertIncludes(html, '<th>a</th>');
+    assertIncludes(html, '<th>b</th>');
+    assertIncludes(html, '<td>1</td>');
+    assertIncludes(html, '<td>2</td>');
+  });
+
+  test('table cells keep backslash escapes except escaped pipes', function () {
+    var escapedCell = render('| \\*a\\* | b |\n| --- | --- |\n| c | d |');
+    assertIncludes(escapedCell, '<th>*a*</th>');
+    assertExcludes(escapedCell, '<em>');
     assertIncludes(render('| a \\| b | c |\n| --- | --- |\n| d | e |'), '<th>a | b</th>');
   });
 

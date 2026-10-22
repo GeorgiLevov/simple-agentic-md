@@ -7,9 +7,10 @@
   --line: #3a352e;
   --text: #f3efe6;
   --muted: #a39e93;
-  --accent: #e0a45c;
+  --accent: #b794f6;
   --accent-ink: #1a1208;
-  --link: #a9c7ea;
+  --link: #b794f6;
+  --link-hover: #d6bcfa;
   --code: #0e0d0c;
   --notice: #3d2c24;
   --notice-line: #6b4b38;
@@ -39,8 +40,8 @@ body {
 }
 
 ::selection {
-  background: #4d4638;
-  color: var(--text);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .topbar {
@@ -189,7 +190,10 @@ textarea {
   tab-size: 2;
 }
 
-textarea:focus { outline: none; }
+textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
 
 textarea::placeholder { color: var(--muted); }
 
@@ -233,7 +237,7 @@ textarea::placeholder { color: var(--muted); }
   text-underline-offset: 3px;
 }
 
-.preview a:hover { color: #d7e7f8; }
+.preview a:hover { color: var(--link-hover); }
 
 .preview .blocked-link,
 .preview .blocked-image { color: inherit; }

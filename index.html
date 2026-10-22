@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>simple-agentic-md</title>
   <meta name="description" content="A local Markdown editor with a live side-by-side preview.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23e0a45c'/%3E%3Cpath d='M8 10h16M8 16h10M8 22h16' stroke='%231a1208' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23b794f6'/%3E%3Cpath d='M8 10h16M8 16h10M8 22h16' stroke='%231a1208' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
       <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
-        <rect x="1" y="1" width="30" height="30" rx="7" fill="#e0a45c"/>
+        <rect x="1" y="1" width="30" height="30" rx="7" fill="#b794f6"/>
         <path d="M8 10h16M8 16h10M8 22h16" stroke="#1a1208" stroke-width="2" stroke-linecap="round"/>
       </svg>
       <div>
@@ -37,14 +37,14 @@
         <p class="pane-title"><label for="editor">Editor</label></p>
         <span id="doc-name" class="meta">untitled.md</span>
       </div>
-      <textarea id="editor" spellcheck="true" autocomplete="off" autocapitalize="off" placeholder="Write Markdown…" aria-label="Markdown source"></textarea>
+      <textarea id="editor" spellcheck="true" autocomplete="off" autocapitalize="off" placeholder="Write Markdown…"></textarea>
     </section>
     <section class="pane pane-preview" aria-label="Preview">
       <div class="pane-bar">
         <p class="pane-title">Preview</p>
         <span class="meta"><span id="save-state">Saved</span> · <span id="char-count">0 characters</span></span>
       </div>
-      <div id="preview" class="preview" aria-label="Rendered preview"></div>
+      <div id="preview" class="preview" role="region" aria-label="Rendered preview"></div>
     </section>
   </main>
   <noscript><p class="noscript">This editor needs JavaScript. It still runs entirely in your browser — nothing is uploaded.</p></noscript>

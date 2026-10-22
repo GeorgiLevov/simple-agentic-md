@@ -204,26 +204,52 @@
 
   function applyEmphasis(value, depth) {
     if (depth > 8) return value;
-    var next = value.replace(/\*\*((?:(?!\*\*).)+)\*\*/g, function (full, inner) {
+    var slots = [];
+    function hold(html) {
+      var id = slots.length;
+      slots.push(html);
+      return '\u0001' + id + '\u0001';
+    }
+    function restoreHold(text) {
+      var guard = 0;
+      while (text.indexOf('\u0001') !== -1 && guard++ < 12) {
+        var next = text.replace(/\u0001(\d+)\u0001/g, function (_, digits) {
+          var index = parseInt(digits, 10);
+          return Object.prototype.hasOwnProperty.call(slots, index) ? slots[index] : '';
+        });
+        if (next === text) break;
+        text = next;
+      }
+      return text;
+    }
+    function wrap(tag, inner) {
+      return hold('<' + tag + '>' + applyEmphasis(inner, depth + 1) + '</' + tag + '>');
+    }
+
+    var next = value.replace(/(^|\W)\*\*\*((?:(?!\*\*\*).)+)\*\*\*(?=\W|$)/g, function (full, prefix, inner) {
       if (/^\s|\s$/.test(inner)) return full;
-      return '<strong>' + applyEmphasis(inner, depth + 1) + '</strong>';
+      return prefix + hold('<strong><em>' + applyEmphasis(inner, depth + 1) + '</em></strong>');
+    });
+    next = next.replace(/\*\*((?:(?!\*\*).)+)\*\*/g, function (full, inner) {
+      if (/^\s|\s$/.test(inner)) return full;
+      return wrap('strong', inner);
     });
     next = next.replace(/(^|\W)__((?:(?!__).)+)__(?=\W|$)/g, function (full, prefix, inner) {
       if (/^\s|\s$/.test(inner)) return full;
-      return prefix + '<strong>' + applyEmphasis(inner, depth + 1) + '</strong>';
+      return prefix + wrap('strong', inner);
     });
     next = next.replace(/(^|\W)\*((?:(?!\*).)+)\*(?=\W|$)/g, function (full, prefix, inner) {
       if (/^\s|\s$/.test(inner)) return full;
-      return prefix + '<em>' + applyEmphasis(inner, depth + 1) + '</em>';
+      return prefix + wrap('em', inner);
     });
     next = next.replace(/(^|\W)_((?:(?!_).)+)_(?=\W|$)/g, function (full, prefix, inner) {
       if (/^\s|\s$/.test(inner)) return full;
-      return prefix + '<em>' + applyEmphasis(inner, depth + 1) + '</em>';
+      return prefix + wrap('em', inner);
     });
-    return next;
+    return restoreHold(next);
   }
 
-  function parseInline(source, depth) {
+  function parseInline(source, depth, inLink) {
     if (!source) return '';
     if (depth > 12) return escapeHtml(source);
     var slots = [];
@@ -258,10 +284,10 @@
           continue;
         }
       }
-      if (ch === '[') {
+      if (ch === '[' && !inLink) {
         var link = matchLink(source, i);
         if (link) {
-          out += protect(renderAnchor(parseInline(link.label, depth + 1), link.url, link.title));
+          out += protect(renderAnchor(parseInline(link.label, depth + 1, true), link.url, link.title));
           i = link.end;
           continue;
         }
@@ -384,8 +410,8 @@
     var i = source.charAt(0) === '|' ? 1 : 0;
     for (; i < source.length; i++) {
       var ch = source.charAt(i);
-      if (ch === '\\' && i + 1 < source.length) {
-        current += source.charAt(i + 1);
+      if (ch === '\\' && source.charAt(i + 1) === '|') {
+        current += '|';
         i++;
         continue;
       }
@@ -405,7 +431,7 @@
     var cells = splitCells(line);
     if (!cells.length) return false;
     for (var i = 0; i < cells.length; i++) {
-      if (!/^:?-{3,}:?$/.test(cells[i].trim())) return false;
+      if (!/^:?-+:?$/.test(cells[i].trim())) return false;
     }
     return true;
   }
@@ -694,7 +720,7 @@
 
   function renderMarkdown(input) {
     var source = input == null ? '' : String(input);
-    source = source.replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/\u0000/g, '\uFFFD');
+    source = source.replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/[\u0000\u0001]/g, '\uFFFD');
     if (source.charCodeAt(0) === 0xfeff) source = source.slice(1);
     if (!source) return '';
     return parseBlocks(source.split('\n'), 0, source.split('\n').length, 0).html;
