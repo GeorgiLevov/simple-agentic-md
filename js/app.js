@@ -5,7 +5,7 @@
   var TEXT_KEY = 'simple-agentic-md:text';
   var NAME_KEY = 'simple-agentic-md:name';
   var SAMPLE_IMAGE =
-    'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27180%27 height=%2748%27%3E%3Crect width=%27180%27 height=%2748%27 rx=%278%27 fill=%27%23b794f6%27/%3E%3Ctext x=%2716%27 y=%2731%27 fill=%27%231a1208%27 font-family=%27Georgia%27 font-size=%2718%27%3Eimage%3C/text%3E%3C/svg%3E';
+    'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27180%27 height=%2748%27%3E%3Crect width=%27180%27 height=%2748%27 rx=%278%27 fill=%27%23b794f6%27/%3E%3Ctext x=%2716%27 y=%2731%27 fill=%27%231a1220%27 font-family=%27Georgia%27 font-size=%2718%27%3Eimage%3C/text%3E%3C/svg%3E';
 
   var SAMPLE = [
     '# simple-agentic-md',

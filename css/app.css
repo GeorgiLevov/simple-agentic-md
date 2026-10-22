@@ -8,13 +8,13 @@
   --text: #f3efe6;
   --muted: #a39e93;
   --accent: #b794f6;
-  --accent-ink: #1a1208;
+  --accent-ink: #1a1220;
   --link: #b794f6;
   --link-hover: #d6bcfa;
   --code: #0e0d0c;
-  --notice: #3d2c24;
-  --notice-line: #6b4b38;
-  --notice-text: #f6e4d4;
+  --notice: #2a2140;
+  --notice-line: #5b4a80;
+  --notice-text: #ece4fb;
   --sans: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --serif: "Iowan Old Style", Palatino, "Palatino Linotype", "Liberation Serif", Georgia, serif;
   --mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", "DejaVu Sans Mono", Menlo, Consolas, monospace;
